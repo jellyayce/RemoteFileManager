@@ -20,6 +20,10 @@ public class FileServer {
         try (ServerSocket serverSocket = new ServerSocket(PORT)) {
             System.out.println("Server started on port " + PORT + "...");
 
+            HttpFileServer httpFileServer = new HttpFileServer();
+            new Thread(httpFileServer).start();
+            System.out.println("HTTP File Server started on port 8080...");
+
             while (true) {
                 Socket clientSocket = serverSocket.accept();
                 System.out.println("New client connected: " + clientSocket.getInetAddress());

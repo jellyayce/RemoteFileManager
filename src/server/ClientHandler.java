@@ -11,6 +11,9 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
+import java.net.DatagramSocket;
+import java.net.DatagramPacket;
+import java.net.InetAddress;
 
 /**
  * Handles client requests in a separate thread.
@@ -120,6 +123,7 @@ public class ClientHandler implements Runnable {
             }
             output.println("File " + filename + " uploaded successfully.");
             logger.log("File uploaded: " + filename);
+            broadcastNotification("[NOTIFICATION] " + filename + " was uploaded");
         } catch (IOException e) {
             output.println("Error saving file: " + e.getMessage());
             logger.log("Error uploading file " + filename + ": " + e.getMessage());
@@ -155,6 +159,7 @@ public class ClientHandler implements Runnable {
             if (file.delete()) {
                 output.println("File " + filename + " deleted successfully.");
                 logger.log("File deleted: " + filename);
+                broadcastNotification("[NOTIFICATION] " + filename + " was deleted");
             } else {
                 output.println("Error: Could not delete " + filename);
                 logger.log("Failed to delete file: " + filename);
@@ -162,6 +167,18 @@ public class ClientHandler implements Runnable {
         } else {
             output.println("Error: File not found.");
             logger.log("Delete failed, file not found: " + filename);
+        }
+    }
+
+    private void broadcastNotification(String message) {
+        try (DatagramSocket socket = new DatagramSocket()) {
+            socket.setBroadcast(true);
+            byte[] buffer = message.getBytes();
+            InetAddress address = InetAddress.getByName("255.255.255.255");
+            DatagramPacket packet = new DatagramPacket(buffer, buffer.length, address, 5001);
+            socket.send(packet);
+        } catch (IOException e) {
+            logger.log("Failed to send UDP broadcast: " + e.getMessage());
         }
     }
 

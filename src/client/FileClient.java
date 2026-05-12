@@ -10,6 +10,9 @@ import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
 import java.util.Scanner;
+import java.net.DatagramSocket;
+import java.net.DatagramPacket;
+import java.net.MulticastSocket;
 
 /**
  * The client application for the Remote File Manager.
@@ -21,6 +24,8 @@ public class FileClient {
     private static final String DOWNLOADS_DIR = "downloads";
 
     public static void main(String[] args) {
+        startUdpListener();
+
         try (Socket socket = new Socket(SERVER_ADDRESS, SERVER_PORT);
              BufferedReader input = new BufferedReader(new InputStreamReader(socket.getInputStream()));
              PrintWriter output = new PrintWriter(socket.getOutputStream(), true);
@@ -56,6 +61,28 @@ public class FileClient {
         } catch (IOException e) {
             System.err.println("Connection error: " + e.getMessage());
         }
+    }
+
+    /**
+     * Starts a background thread to listen for UDP notifications on port 5001.
+     */
+    private static void startUdpListener() {
+        Thread udpListener = new Thread(() -> {
+            try {
+                MulticastSocket multicastSocket = new MulticastSocket(5001);
+                byte[] buffer = new byte[1024];
+                while (true) {
+                    DatagramPacket packet = new DatagramPacket(buffer, buffer.length);
+                    multicastSocket.receive(packet);
+                    String message = new String(packet.getData(), 0, packet.getLength());
+                    System.out.println("\n" + message);
+                }
+            } catch (Exception e) {
+                System.out.println("UDP Listener error: " + e.getMessage());
+            }
+        });
+        udpListener.setDaemon(true);
+        udpListener.start();
     }
 
     private static void printMenu() {
