@@ -11,17 +11,15 @@ import java.net.InetSocketAddress;
 import java.nio.file.Files;
 import java.util.concurrent.Executors;
 
-/**
- * An HTTP server that serves files from the server_files directory.
- */
+
+//An HTTP server that serves files from the server_files directory.
 public class HttpFileServer implements Runnable {
 
     private static final int PORT = 8080;
     private static final String SERVER_FILES_DIR = "server_files";
 
-    /**
-     * Starts the HTTP server on port 8080.
-     */
+    
+    //Starts the HTTP server on port 8080.
     @Override
     public void run() {
         try {
@@ -35,9 +33,8 @@ public class HttpFileServer implements Runnable {
         }
     }
 
-    /**
-     * Handles requests to the root path (/) by listing available files.
-     */
+    
+    //Handles requests to the root path (/) by listing available files.
     static class RootHandler implements HttpHandler {
         @Override
         public void handle(HttpExchange exchange) throws IOException {
@@ -78,9 +75,8 @@ public class HttpFileServer implements Runnable {
         }
     }
 
-    /**
-     * Handles file download requests (/files/filename).
-     */
+    
+    //Handles file download requests (/files/filename).
     static class FileHandler implements HttpHandler {
         @Override
         public void handle(HttpExchange exchange) throws IOException {

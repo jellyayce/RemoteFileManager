@@ -15,9 +15,8 @@ import java.net.DatagramSocket;
 import java.net.DatagramPacket;
 import java.net.InetAddress;
 
-/**
- * Handles client requests in a separate thread.
- */
+
+//Handles client requests in a separate thread.
 public class ClientHandler implements Runnable {
 
     private Socket clientSocket;

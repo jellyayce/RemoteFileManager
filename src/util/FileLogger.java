@@ -7,9 +7,8 @@ import java.io.IOException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
-/**
- * Utility class for logging activity.
- */
+
+//Utility class for logging activity.
 public class FileLogger {
 
     private BufferedWriter writer;
@@ -17,9 +16,8 @@ public class FileLogger {
     private static final String LOG_FILE = LOG_DIR + File.separator + "activity.log";
     private static final DateTimeFormatter FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 
-    /**
-     * Constructs a new FileLogger. Initializes the log file and directory.
-     */
+    
+    //Constructs a new FileLogger. Initializes the log file and directory.
     public FileLogger() {
         try {
             File dir = new File(LOG_DIR);
@@ -51,9 +49,8 @@ public class FileLogger {
         }
     }
 
-    /**
-     * Closes the logger.
-     */
+    
+    //Closes the logger.
     public void close() {
         if (writer != null) {
             try {

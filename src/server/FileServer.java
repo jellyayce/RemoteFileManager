@@ -4,9 +4,8 @@ import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
 
-/**
- * The main server class for the Remote File Manager.
- */
+
+//The main server class for the Remote File Manager.
 public class FileServer {
 
     private static final int PORT = 5000;
